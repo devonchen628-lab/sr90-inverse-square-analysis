@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "total_deviances": [
+    2894.5347284403992,
+    1052.896227826834,
+    1022.7902136755896,
+    216.60539762144833
+  ],
+  "mu_per_m": 0.4407777081712937,
+  "offset_sensitivity_matches_reference": true,
+  "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]"
+}

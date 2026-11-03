@@ -1,0 +1,73 @@
+[
+  {
+    "source": "Original Radlab/Task16_2.csv",
+    "destination": "data/raw/Task16_2.csv",
+    "mtime": "2026-11-03T14:10:49.380316",
+    "sha256": "cd6af2cff2534ecb453bb393a68a66670138b825cc0182ac6b21c51379749fae"
+  },
+  {
+    "source": "outputs/sr90_research/inputs/deadtime.csv",
+    "destination": "data/raw/deadtime.csv",
+    "mtime": "2026-11-02T15:28:26.192754",
+    "sha256": "3e5640f544117ce96e51ebee5988734b27a7a133eb9985d87f3a96f3fa1d1613"
+  },
+  {
+    "source": "outputs/sr90_research/tex/main.tex",
+    "destination": "report/main.tex",
+    "mtime": "2026-11-02T16:14:01.418706",
+    "sha256": "1758063055eaa24e67b83cf320e08dfe947b05d0dd14ee9d91620ee706b3d735"
+  },
+  {
+    "source": "outputs/sr90_research/tex/Imperial_lab_report.cls",
+    "destination": "report/Imperial_lab_report.cls",
+    "mtime": "2026-11-02T15:36:38.599572",
+    "sha256": "0bbb480ae395282a54810d7a93ef9e5e9b9c0ecbabcf35379311de0d3e99a8ee"
+  },
+  {
+    "source": "outputs/sr90_research/figures/report_data.png",
+    "destination": "report/images/report_data.png",
+    "mtime": "2026-11-02T16:12:47.992222",
+    "sha256": "d398981a11da24b06083eb30ca73a8eceef9a58e22badc25c9ef9a2954dd5c7a"
+  },
+  {
+    "source": "outputs/sr90_research/figures/report_geometry.png",
+    "destination": "report/images/report_geometry.png",
+    "mtime": "2026-11-02T16:12:48.085583",
+    "sha256": "1ec2da37ca3d794f95747218ba52c5b2b2450be1abb3ce38a725fbed1087b04c"
+  },
+  {
+    "source": "outputs/air_attenuation_comparison/analysis.py",
+    "sha256": "6af87fca36d32fb3c38e677c85a7fe7c5e5839d25016fecd0a7354fea91de4ed",
+    "mtime": "2026-11-03T14:48:10.066655",
+    "disposition": "geometry extraction"
+  },
+  {
+    "source": "outputs/air_attenuation_comparison/analysis_staged.py",
+    "sha256": "33d55b16009edcc8185ba0e13a86ccac3704f842367edc5fb2a30f854e5bbbc9",
+    "mtime": "2026-11-03T15:31:21.760525",
+    "disposition": "adapted final implementation"
+  },
+  {
+    "source": "outputs/air_attenuation_comparison/final_comparison_table.py",
+    "sha256": "f6e8500739df8815c3b5d6a92e964f8742125be086495c4d165408dfc0a7fe09",
+    "mtime": "2026-11-03T15:30:20.075981",
+    "disposition": "adapted final implementation"
+  },
+  {
+    "source": "outputs/air_attenuation_comparison/analysis_m3.py",
+    "sha256": "5e54dedccc490a500f59c0b88c5826dbebfc269cc509364affa6589b02b1b0b2",
+    "mtime": "2026-11-03T15:17:25.014859",
+    "disposition": "superseded"
+  },
+  {
+    "source": "outputs/air_attenuation_comparison/analysis_merged.py",
+    "sha256": "b8702c6feb6d8f7609f686e02d0436f3cedd5d399bb1c2855487f1b0d82ee2fa",
+    "mtime": "2026-11-03T15:27:29.605956",
+    "disposition": "superseded"
+  },
+  {
+    "source": "work/radioactivity/fit_new_deadtime.py",
+    "sha256": "9161b820dda08dcf0eee7c3f3f9f99b5d24bd583ccb91675c457c03cc316d04a",
+    "disposition": "adapted portable dead-time diagnostic"
+  }
+]
