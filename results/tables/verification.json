@@ -1,12 +1,44 @@
 {
   "passed": true,
+  "python": "3.13.5",
+  "raw_sha256": "cd6af2cff2534ecb453bb393a68a66670138b825cc0182ac6b21c51379749fae",
+  "geometry_checks": {
+    "quadrature_max_relative_difference": 0.0,
+    "detector_integral_max_relative_difference": 8.881784197001252e-16,
+    "derivative_max_relative_difference": 2.1282553497314893e-10
+  },
+  "n_scan_rows": 32,
+  "background_counts": 8,
+  "background_exposure_s": 60,
+  "tau_fixed_us": 1.97884,
+  "tau_sensitivity_sigma_us": 0.02126,
+  "multi_start_total_deviance_difference": {
+    "M0": 1.5916157281026244e-11,
+    "M1": 9.688733371149283e-09,
+    "M2": 3.467448550509289e-12
+  },
+  "jacobian_max_column_relative_error": {
+    "M0": 1.0257208907958769e-08,
+    "M1": 1.576943782711797e-05,
+    "M2": 9.8839330220627e-07
+  },
+  "no_active_optimizer_bounds": true,
+  "offset_reference_check_passed": true,
+  "M0_refitted_with_response": true,
   "total_deviances": [
-    2894.5347284403992,
-    1052.896227826834,
-    1022.7902136755896,
-    216.60539762144833
+    2785.1104822983307,
+    1022.7902136573408,
+    216.605397621261
   ],
-  "mu_per_m": 0.4407777081712937,
-  "offset_sensitivity_matches_reference": true,
-  "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]"
+  "M2_mu_per_m": 0.4407777350873138,
+  "M2_mu_profile_interval": [
+    0.42503136503951655,
+    0.45655244146809876
+  ],
+  "figure_width_mm": 178,
+  "figure_height_mm": 130,
+  "figure_png_dpi": 300,
+  "complete_pipeline_passed": true,
+  "raw_CSV_hashes_unchanged": true,
+  "figure_export_dimensions_checked": true
 }

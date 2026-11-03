@@ -1,16 +1,6 @@
 """Finite circular-source / square-detector quadrature and input validation."""
-import argparse
-import hashlib
-import json
-from pathlib import Path
 import numpy as np
 import pandas as pd
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-from scipy.optimize import least_squares, brentq
-from scipy.special import xlogy
-from scipy.stats import chi2
 from numpy.polynomial.legendre import leggauss
 
 RS = .004875

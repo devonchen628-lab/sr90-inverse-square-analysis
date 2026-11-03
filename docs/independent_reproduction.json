@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "current_directory": "/private/tmp",
+  "current_results_supplied_to_clean_copy": false,
+  "numeric_csv_rtol": 1e-09,
+  "numeric_csv_atol": 1e-08,
+  "tables_compared": [
+    "latent_distances.csv",
+    "model_comparison.csv",
+    "model_predictions.csv",
+    "offset_deadtime_sensitivity.csv",
+    "offset_sensitivity.csv",
+    "point_source_sensitivity.csv",
+    "residuals.csv"
+  ],
+  "historical_files_verified_byte_identical": 25,
+  "raw_and_report_assets_unchanged": true,
+  "pdf_fonts_embedded": true,
+  "pdf_has_no_raster_images": true
+}

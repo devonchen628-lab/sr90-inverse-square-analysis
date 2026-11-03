@@ -1,40 +1,58 @@
 # Sr-90/Y-90 inverse-square analysis
 
-Imperial College London Year 2 radioactivity laboratory project. This analysis tests how finite geometry, counting losses and effective attenuation describe deviations from inverse-square behaviour in a sealed Sr-90/Y-90 source distance scan. Intended repository visibility: **PRIVATE**.
+Imperial College London Year 2 radioactivity laboratory project. **Private repository.**
 
-A circular emitting source (radius 4.875 mm) faces a 10 × 10 mm² silicon detector on a rail. The active-plane separation is the measured rail distance plus one common offset, 18.0 ± 1.5 mm. Source emission and detector efficiency are absorbed into a fitted normalization; this is not an absolute activity calibration.
+**Research question:** To what extent can realistic source–detector geometry and effective β-particle attenuation explain the observed deviations from the inverse-square law?
 
-## Data and physical models
+A sealed Sr-90/Y-90 source faces a 10 × 10 mm² silicon detector on a rail. A uniform circular emitting disc of radius 4.875 mm and one common active-plane offset of 18.0 ± 1.5 mm are the established geometry assumptions, not adjustable choices made to improve agreement.
 
-`data/raw/Task16_2.csv` is the byte-preserved original 32-position dataset (1–85 cm), including counts `n`, exposure `t` in seconds, rail distance `d` and reading standard uncertainty `d_unc` in metres. Derived spreadsheet columns are retained but not fitted. `deadtime.csv` is the original 500-bin interval histogram. Background is a separate observation of 8 counts in 60 s.
+## Data and models
 
-For latent rail distance x, offset δ and source rate S:
+`data/raw/Task16_2.csv` is the byte-preserved original scan: 32 distances from 1 to 85 cm, counts `n`, exposure `t` (s), distance `d` and reading standard uncertainty `d_unc` (m). Derived spreadsheet columns are retained but not fitted. `deadtime.csv` is the original 500-bin interval histogram. The background control is 8 counts in 60 s.
 
-- **M0:** S = C/x²; no offset correction, background or dead time.
-- **M1:** S = C A/[4π(x+δ)²], with background and dead time.
-- **M2:** S = C ε(x+δ), with background and dead time.
-- **M3:** S = C ε(x+δ) exp(−μx), with background and dead time.
+For latent true rail distance x and physical source contribution S:
 
-ε averages the analytic rectangular-detector solid angle over a uniform circular source, using 24 radial Gauss–Legendre × 96 angular samples. M1–M3 predict R = (S+B)/[1+τ(S+B)], with B = β/(1−τβ). One observed background rate β is shared between the scan and its Poisson control. τ is fixed at 1.97884 µs, with separate sensitivity fits at ±0.02126 µs.
+| Model | Physical prediction | Added assumption |
+|---|---|---|
+| M0 | S = K/x² | Ideal source and small-detector inverse square |
+| M1 | S = C G(x;δ) | Shared offset, finite circular source and rectangular-detector solid angle |
+| M2 | S = C G(x;δ) exp(−μx) | Phenomenological effective attenuation |
 
-## Statistics and findings
+G averages the analytic rectangular-detector solid angle over the source disc, using validated 24 radial × 96 angular quadrature. All three models use **the same measurement response**:
 
-Independent Poisson scan counts are fitted jointly with Gaussian constraints on each latent distance and one Gaussian constraint on the shared offset. Offset uncertainty is correlated across all observations, not added independently to each point. All stated distance uncertainties are interpreted as standard deviations.
+R = (S+B) / [1+τ(S+B)], with B = β/(1−τβ).
 
-| Model | Scan counting deviance | Total deviance |
-|---|---:|---:|
-| M0 | 765.3310 | 2894.5347 |
-| M1 | 867.1804 | 1052.8962 |
-| M2 | 851.9419 | 1022.7902 |
-| M3 | 190.9123 | 216.6054 |
+β is one observed background rate jointly fitted to the scan and its Poisson control; τ = 1.97884 µs is fixed. Its ±0.02126 µs sensitivity is separate. μ is an effective distance-dependence parameter, **not a measured physical air absorption coefficient**. C incorporates source emission and detector response, not a calibrated activity.
 
-Total deviance includes the scan counting term, background-control deviance where applicable, distance penalties and the common-offset penalty. These are distinct statistics. M3 gives μ = 0.440778 m⁻¹ (formal standard error 0.015888 m⁻¹), a one-unit profile interval of approximately 0.42503–0.45655 m⁻¹, and fitted offset 19.0446 mm. Its nominal total deviance per degree of freedom is 7.22 (30 degrees), indicating substantial unexplained variation.
+## Results
 
-At fixed offsets 16.5, 18.0 and 19.5 mm, M3 μ is 0.370450, 0.411925 and 0.453350 m⁻¹ respectively. These are conditional sensitivity scenarios, not independent measurements.
+| Model | Scan Poisson deviance | Total deviance | Nominal dof | Total/dof | Reduction from previous |
+|---|---:|---:|---:|---:|---:|
+| M0 | 772.663 | 2785.110 | 31 | 89.84 | — |
+| M1 | 851.941 | 1022.790 | 31 | 32.99 | 63.28% |
+| M2 | 190.912 | 216.605 | 30 | 7.22 | 78.82% |
+
+M0 was refitted with background and dead time: its total is **not** the historical 2894.535. Total deviance adds background-control deviance, individual distance penalties and (for M1/M2) the shared offset penalty to the scan term. M0→M1 actually increases the scan counting term while greatly reducing the distance penalty; the total is the comparable objective.
+
+M2 gives μ = 0.440778 ± 0.015888 m⁻¹ (formal local 1σ, τ fixed, background and shared offset profiled). Its ΔD=1 profile interval is 0.425031–0.456552 m⁻¹. The fitted offset is 19.0446 ± 0.4017 mm under the same conditional model. These intervals exclude model inadequacy.
+
+Fixed-offset M2 scenarios give μ = 0.370450, 0.411925 and 0.453350 m⁻¹ at δ = 16.5, 18.0 and 19.5 mm. Their approximately 0.01132 m⁻¹ error bars are conditional statistical uncertainties; the scenario span is **not a confidence interval**. The point-source/small-detector approximations P1/P2 are retained only as geometry sensitivity checks. See [quantitative interpretation](docs/results.md).
+
+![Three-panel analysis](results/figures/final_three_panel.png)
+
+The [vector PDF](results/figures/final_three_panel.pdf) is designed at 178 × 130 mm for a full-width `figure*` in a two-column A4 report. The PNG is 300 dpi. Use this width rather than shrinking to one column; body labels are 7–8 pt. [Caption and insertion code](docs/figure_usage.tex) define the residuals and sensitivity bars.
+
+## Statistics and limitations
+
+Scan counts and the background control use Poisson likelihoods. Each latent distance has its own Gaussian reading constraint. M1/M2 use **one shared** Gaussian offset prior, 18.0 ± 1.5 mm, preserving the induced correlations. Formal errors use the unrescaled local likelihood curvature. [Methods](docs/methodology.md) explain the component deviances, nuisance parameters, nominal degrees of freedom, residuals and numerical checks.
+
+All three models have substantial lack of fit. M2 retains structured residuals, including positive middle-distance departures and negative terminal departures. Model improvement does not identify a unique physical mechanism. Alignment, aperture/encapsulation, beta energy dependence, detector threshold, background drift and repeat variability remain uncharacterised. The non-paralysable response and Poisson count law are working approximations; a true dead-time process need not be Poisson. Formal p-values are only nominal diagnostics.
+
+The available histogram recovery fit gives about 1.998734 ± 0.020807 µs, whereas the prescribed scan constant remains 1.97884 ± 0.02126 µs; its exact derivation was not found locally. The 31.25 µs histogram range and final-bin overflow convention are assumptions not documented by the CSV itself. No value was changed to obtain a better fit.
 
 ## Reproduce
 
-Use Python 3.11+ (verified with Anaconda Python and the pinned packages):
+Python 3.11+; verified using Python 3.13.5 and the pinned packages:
 
 ```sh
 python -m venv .venv
@@ -43,24 +61,18 @@ python -m pip install -r requirements.txt
 python reproduce.py
 ```
 
-The entry point works from any current directory, regenerates every final analysis figure and numerical table, checks total deviances and offset sensitivity against the original results, and writes `results/tables/verification.json`. Typical runtime is a few minutes. No external data, Geant4 or network access is required. For the historical report, install a TeX distribution and run `cd report && pdflatex main.tex && pdflatex main.tex`. Its two supplied figures are archived assets, not outputs of the current M0–M3 pipeline.
+The entry point also works from another current directory when invoked by absolute path. It regenerates all current tables, the three-panel PDF/PNG and the histogram diagnostic; it verifies immutable raw hashes, geometry quadrature, component sums, analytic Jacobians, alternate starting values and sensitivity results. No external data, network or Geant4 is needed. `src/plotting.py` provides the final figure; `src/comparison.py` orchestrates the fits.
 
-## Limitations
-
-μ describes effective distance dependence, not a calibrated air absorption coefficient. The non-paralysable response is a working approximation; a dead-time process is not strictly Poisson. Background stationarity, alignment, aperture, energy response and additional repeat variation are not established. Formal intervals are conditional on fixed τ and incomplete error models. Nominal p-values and information criteria are heuristic with many latent distances and severe lack of fit.
-
-The available histogram fit gives 1.998734 ± 0.020807 µs, rather than the prescribed scan constant 1.97884 ± 0.02126 µs. The latter is deliberately preserved; its exact derivation was not found locally. The histogram time axis (31.25 µs) and last-bin overflow interpretation are assumptions not encoded in the CSV. See `docs/methodology.md`.
-
-The preserved two-column LaTeX report predates the final analysis and describes different geometry and transport models. It is a historical report, not a report of the M0–M3 results above. No matching final two-page M0–M3 LaTeX report was found.
-
-## Layout
+## Layout and history
 
 ```text
-data/raw/          immutable original scan and interval data
-src/               geometry, models, comparison and dead-time analysis
-results/figures/   regenerated model/residual and histogram figures
-results/tables/    numerical results, sensitivity and verification
-report/            preserved historical LaTeX source, class and images
-docs/              methods, cleanup record, provenance and reference sensitivity
-reproduce.py       complete analysis entry point and numerical verification
+data/raw/       immutable original CSV files
+src/            geometry, common-response models, comparison, plotting, timing
+results/        current figures and numerical tables
+report/         preserved historical two-page LaTeX report and assets
+docs/           methods, interpretation, caption, verification and provenance
+archive/        complete historical M0–M3 scripts, outputs and documentation
+reproduce.py    supported current analysis entry point
 ```
+
+Historical M0–M3 labels differ from current M0–M2. They are preserved under `archive/2026-11-03_M0-M3/`, and must not be mixed with current tables. The unmodified `report/` predates both final model sequences and uses different geometry/transport assumptions; it is **historical**, not a report of the current results. Build it with `cd report && pdflatex main.tex && pdflatex main.tex`. Its archived figures are not regenerated by this pipeline.

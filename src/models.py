@@ -1,19 +1,8 @@
 #!/usr/bin/env python3
-"""Compare sequential point/dead-time, finite-geometry and full models.
-
-Run: python analysis_staged.py data_used.csv --output-dir results_staged
-Requires geometry.py in the same directory. No Geant4 is used.
-"""
-import argparse, hashlib, json
-from pathlib import Path
+"""Common-response Poisson fits for ideal, finite-geometry and attenuation models."""
 import numpy as np
-import pandas as pd
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 from scipy.optimize import least_squares, brentq
 from scipy.special import xlogy
-from scipy.stats import chi2
 from geometry import efficiency, verify_geometry, read_data, DELTA0, DELTA_SD
 
 TAU=1.97884e-6
@@ -31,10 +20,11 @@ def pres(n, lam):
 
 class Model:
     def __init__(self,data,name,tau=TAU,offset=None,mu_fixed=None):
-        self.data=data; self.name=name; self.tau=tau if name in ('M1','M2','M3','dead_only') else 0.
-        self.with_bg=name in ('M1','M2','M3','background_only'); self.atten=name in ('M3','dead_only','background_only')
+        if name not in ('M0', 'M1', 'M2', 'P1', 'P2'): raise ValueError(name)
+        self.data=data; self.name=name; self.tau=tau
+        self.with_bg=True; self.atten=name in ('M2','P2')
         self.free_mu=self.atten and mu_fixed is None; self.mu_fixed=mu_fixed
-        self.offset=offset; self.joint=offset is None
+        self.offset=offset if name != 'M0' else 0.; self.joint=name != 'M0' and offset is None
         self.d=data.d.to_numpy(float); self.s=data.d_unc.to_numpy(float)
         self.n=data.n.to_numpy(float); self.t=data.t.to_numpy(float); self.N=len(data)
         # One background parameter is shared by the scan and control where enabled.
@@ -50,7 +40,7 @@ class Model:
         return C,mu,beta,delta,p[i:]
     def calc(self,p,jac=False):
         C,mu,beta,delta,z=self.unpack(p); x=self.d+self.s*z
-        e=(1/x**2) if self.name=='M0' else ((.010*.010/(4*np.pi*(x+delta)**2)) if self.name=='M1' else efficiency(x+delta))
+        e=(1/x**2) if self.name=='M0' else ((.010*.010/(4*np.pi*(x+delta)**2)) if self.name in ('P1','P2') else efficiency(x+delta))
         S=C*e*np.exp(-mu*x)
         B=beta/(1-self.tau*beta) if self.with_bg else 0.
         Q=S+B; den=1+self.tau*Q; R=Q/den; lam=self.t*R
@@ -62,7 +52,7 @@ class Model:
         res=np.concatenate(parts)
         if not jac: return res
         J=np.zeros((len(res),len(p))); fac=dc*self.t/(den*den)
-        de=np.zeros_like(x) if self.name=='M0' else ((-2/(x+delta)) if self.name=='M1' else efficiency(x+delta,derivative=True)/e)
+        de=np.zeros_like(x) if self.name=='M0' else ((-2/(x+delta)) if self.name in ('P1','P2') else efficiency(x+delta,derivative=True)/e)
         J[:self.N,0]=fac*S; i=1
         if self.free_mu: J[:self.N,i]=-x*fac*S; i+=1
         if self.with_bg:
@@ -75,18 +65,16 @@ class Model:
         J[np.arange(self.N),i+np.arange(self.N)]=fac*S*dlogdx*self.s
         J[self.N+np.arange(self.N),i+np.arange(self.N)]=1.
         return J
-    def run(self):
+    def run(self, initial_mu=.4, initial_scale=1.):
         delta=DELTA0 if self.joint else self.offset
-        e0=(1/self.d**2) if self.name=='M0' else ((.010*.010/(4*np.pi*(self.d+delta)**2)) if self.name=='M1' else efficiency(self.d+delta))
+        e0=(1/self.d**2) if self.name=='M0' else ((.010*.010/(4*np.pi*(self.d+delta)**2)) if self.name in ('P1','P2') else efficiency(self.d+delta))
         C0=self.n.sum()/np.sum(self.t*e0)
-        v=[np.log(C0)]; lo=[-20.]; hi=[35.]
-        if self.free_mu: v+=[.4]; lo+=[0.]; hi+=[20.]
+        v=[np.log(C0*initial_scale)]; lo=[-20.]; hi=[35.]
+        if self.free_mu: v+=[initial_mu]; lo+=[0.]; hi+=[20.]
         if self.with_bg: v+=[np.log(NBG/TBG)]; lo+=[-20.]; hi+=[5.]
         if self.joint: v+=[0.]; lo+=[-8.]; hi+=[8.]
-        # Avoid clipping the strongly misspecified M0 fit at an arbitrary ±12σ.
-        # Keep only the physical positivity bound for its latent distances.
-        zlimit=1000. if self.name=='M0' else 12.
-        v+=list(np.zeros(self.N)); lo+=list(np.maximum(-zlimit,-self.d/self.s+1e-5)); hi+=list(np.full(self.N,zlimit))
+        # Same latent-distance domain for every model: physical x > 0, no sigma clipping.
+        v+=list(np.zeros(self.N)); lo+=list(-self.d/self.s+1e-5); hi+=list(np.full(self.N,np.inf))
         opt=least_squares(self.calc,v,jac=lambda p:self.calc(p,True),bounds=(lo,hi),xtol=1e-10,ftol=1e-10,gtol=1e-9,max_nfev=700)
         if not opt.success: raise RuntimeError(opt.message)
         self.opt=opt; self.D=float(opt.fun@opt.fun)
@@ -94,9 +82,13 @@ class Model:
         self.B=self.beta/(1-self.tau*self.beta) if self.with_bg else 0.
         self.cov=np.linalg.pinv(opt.jac.T@opt.jac,hermitian=True)
         self.Cse=self.C*np.sqrt(self.cov[0,0]); self.muse=np.sqrt(self.cov[1,1]) if self.free_mu else np.nan
+        bi=1+int(self.free_mu)
+        self.betase=self.beta*np.sqrt(self.cov[bi,bi])
+        self.deltase=DELTA_SD*np.sqrt(self.cov[bi+1,bi+1]) if self.joint else np.nan
+        self.mu_delta_corr=self.cov[1,bi+1]/np.sqrt(self.cov[1,1]*self.cov[bi+1,bi+1]) if self.joint and self.free_mu else np.nan
         return self
     def predict(self,d):
-        d=np.asarray(d); e=(1/d**2) if self.name=='M0' else ((.010*.010/(4*np.pi*(d+self.delta)**2)) if self.name=='M1' else efficiency(d+self.delta))
+        d=np.asarray(d); e=(1/d**2) if self.name=='M0' else ((.010*.010/(4*np.pi*(d+self.delta)**2)) if self.name in ('P1','P2') else efficiency(d+self.delta))
         S=self.C*e*np.exp(-self.mu*d)
         return (S+self.B)/(1+self.tau*(S+self.B))
     def profile(self):
@@ -107,64 +99,10 @@ class Model:
         while b<20 and f(b)<0: b=min(20.,b*1.8+.1)
         return a,brentq(f,self.mu,b,xtol=2e-5) if f(b)>=0 else np.nan
 
-def main():
-    p=argparse.ArgumentParser(description=__doc__); p.add_argument('input_csv',type=Path); p.add_argument('--output-dir',type=Path,default=Path(__file__).parent/'results_staged'); args=p.parse_args()
-    args.output_dir.mkdir(parents=True,exist_ok=True); data,omitted=read_data(args.input_csv)
-    if len(data)!=32: raise ValueError('Expected all 32 Task16_2 rows')
-    checks=verify_geometry(); N=len(data)
-    fits={name:Model(data,name).run() for name in ('M0','M1','M2','M3')}
-    sensitivity=[]
-    for offset in (.0165,.018,.0195,None):
-        for tau in (TAU-TAU_SD,TAU,TAU+TAU_SD):
-            f=Model(data,'M3',tau,offset).run()
-            sensitivity.append(dict(offset_mode='constrained' if offset is None else 'fixed',fixed_offset_mm=offset*1000 if offset else np.nan,tau_us=tau*1e6,fitted_offset_mm=f.delta*1000,C_per_s=f.C,mu_per_m=f.mu,mu_formal_se_conditional_tau=f.muse,background_observed_per_s=f.beta,background_pre_deadtime_per_s=f.B,augmented_deviance=f.D))
-    pd.DataFrame(sensitivity).to_csv(args.output_dir/'offset_deadtime_sensitivity.csv',index=False)
-    intervals={name:fits[name].profile() for name in ('M3',)}
-    rows=[]; base=fits['M1'].D
-    for name in ('M0','M1','M2','M3'):
-        f=fits[name]
-        k=2 if f.atten else 1; dof=N-k
-        rows.append(dict(model=name,n_distance_points=N,normalization=f.C,normalization_formal_se=f.Cse,normalization_unit='m^2/s' if name=='M0' else '1/s',mu_per_m=f.mu if f.atten else np.nan,mu_formal_se=f.muse,mu_profile_low=intervals.get(name,(np.nan,np.nan))[0],mu_profile_high=intervals.get(name,(np.nan,np.nan))[1],offset_fitted_mm=f.delta*1000,tau_fixed_us=f.tau*1e6,background_observed_rate_per_s=f.beta,background_pre_deadtime_rate_per_s=f.B if f.with_bg else np.nan,augmented_deviance=f.D,dof=dof,reduced_deviance=f.D/dof,nominal_gof_p=chi2.sf(f.D,dof),delta_deviance_vs_M1=f.D-base,delta_AIC_vs_M1=f.D-base+2*(k-1),delta_BIC_vs_M1=f.D-base+np.log(N)*(k-1)))
-    pd.DataFrame(rows).to_csv(args.output_dir/'model_comparison.csv',index=False)
-    data.to_csv(args.output_dir/'data_used.csv',index=False)
-    d=data.d.to_numpy(float); sd=data.d_unc.to_numpy(float); t=data.t.to_numpy(float); n=data.n.to_numpy(float); R=n/t
-    f=fits['M3']; S=f.C*efficiency(d+f.delta)*np.exp(-f.mu*d); B=f.B; tau=f.tau
-    cases={'background_only':(S+B)/S-1,'dead_time_only':(S/(1+tau*S))/S-1,'background_plus_dead_time':((S+B)/(1+tau*(S+B)))/S-1}
-    diagnostics=[]
-    for key,val in cases.items():
-        idx=np.argmax(np.abs(val)); diagnostics.append(dict(effect=key,max_absolute_relative_change_percent=abs(val[idx])*100,signed_change_percent=val[idx]*100,distance_cm=d[idx]*100,baseline='same fitted M3 source-only S; no refitting'))
-    pd.DataFrame(diagnostics).to_csv(args.output_dir/'effect_sizes.csv',index=False)
-    grid=np.linspace(.006,.875,500)
-    fig,(ax,ar)=plt.subplots(2,1,figsize=(7.6,6.6),sharex=True,gridspec_kw={'height_ratios':[2.2,1],'hspace':.08})
-    uerr=np.sqrt((np.sqrt(n)/t*d*d)**2+(2*R*d*sd)**2)
-    ax.errorbar(d*100,R*d*d,yerr=uerr,xerr=sd*100,fmt='o',ms=3.6,capsize=2,lw=.7,color='black',label='Measurements (propagated 1σ)',zorder=4)
-    colors={'M0':'#835dac','M1':'#777777','M2':'#0877ae','M3':'#be4d23'}; styles={'M0':':','M1':'--','M2':'-','M3':'-'}
-    residuals={'d_m':d,'n':n,'t_s':t}
-    for name in ('M0','M1','M2','M3'):
-        f=fits[name]; ax.plot(grid*100,f.predict(grid)*grid**2,color=colors[name],ls=styles[name],lw=2,zorder={'M0':1,'M1':1,'M2':2,'M3':3}[name],label={'M0':'M0: unshifted inverse square','M1':'M1: point geometry + background + dead time','M2':'M2: finite geometry + background + dead time','M3':'M3: M2 + effective attenuation'}[name])
-        pred=f.predict(d)
-        if name=='M0':
-            source=f.C/d**2; log_derivative=-2/d
-        elif name=='M1':
-            source=f.C*.010*.010/(4*np.pi*(d+f.delta)**2); log_derivative=-2/(d+f.delta)
-        else:
-            source=f.C*efficiency(d+f.delta)*np.exp(-f.mu*d); log_derivative=efficiency(d+f.delta,derivative=True)/efficiency(d+f.delta)-f.mu
-        derivative=source*log_derivative/(1+f.tau*(source+f.B))**2
-        res=(R-pred)/np.sqrt(pred/t+(derivative*sd)**2); residuals[name+'_standardized_residual']=res
-        if name in ('M0','M1','M2','M3'):
-            ar.scatter(d*100,res,s=17,color=colors[name],marker={'M0':'x','M1':'s','M2':'o','M3':'^'}[name],label=name,alpha=.85,zorder={'M0':1,'M1':1,'M2':2,'M3':3}[name])
-    pd.DataFrame(residuals).to_csv(args.output_dir/'residuals.csv',index=False)
-    ar.axhline(0,c='black',lw=.8)
-    for y in (-2,2): ar.axhline(y,c='#bbbbbb',ls=':',lw=.8)
-    ax.set_ylabel(r'$R d^2\ (\mathrm{m^2\,s^{-1}})$'); ar.set_ylabel('Standardized\nresidual'); ar.set_xlabel('Rail separation $d$ (cm)')
-    ax.legend(frameon=False,fontsize=8.5,loc='best'); ar.legend(frameon=False,fontsize=8,ncol=4)
-    ax.text(.02,.95,'(a)',transform=ax.transAxes,va='top',weight='bold'); ar.text(.02,.92,'(b)',transform=ar.transAxes,va='top',weight='bold')
-    for a in (ax,ar): a.spines[['top','right']].set_visible(False)
-    fig.subplots_adjust(left=.14,right=.97,top=.97,bottom=.1)
-    for ext in ('png','pdf'): fig.savefig(args.output_dir/('model_comparison.'+ext),dpi=300)
-    plt.close(fig)
-    meta=dict(input='data/raw/'+args.input_csv.name,sha256=hashlib.sha256(args.input_csv.read_bytes()).hexdigest(),N=N,background_observed_counts=8,background_time_s=60,tau_us=TAU*1e6,tau_formal_sigma_us=TAU_SD*1e6,geometry_checks=checks,omitted=omitted,notes='Counts and background control modelled as Poisson; shared background parameter in applicable fits; fixed tau sensitivity; shared Gaussian offset. M3 response is an unvalidated non-paralyzable approximation. Profile intervals include background and offset, not uncertainty in tau or unmodelled systematic effects. Delta AIC/BIC are heuristic due to per-point latent nuisance parameters and misspecification.')
-    (args.output_dir/'metadata.json').write_text(json.dumps(meta,indent=2,default=str)+'\n')
-    print(pd.DataFrame(rows).to_string(index=False)); print(pd.DataFrame(diagnostics).to_string(index=False)); print(json.dumps(checks))
-
-if __name__=='__main__': main()
+    def slope(self,d):
+        d=np.asarray(d)
+        if self.name=='M0': e=1/d**2; de=-2/d
+        elif self.name in ('P1','P2'): e=.010*.010/(4*np.pi*(d+self.delta)**2); de=-2/(d+self.delta)
+        else: e=efficiency(d+self.delta); de=efficiency(d+self.delta,derivative=True)/e
+        S=self.C*e*np.exp(-self.mu*d)
+        return S*(de-self.mu)/(1+self.tau*(S+self.B))**2
