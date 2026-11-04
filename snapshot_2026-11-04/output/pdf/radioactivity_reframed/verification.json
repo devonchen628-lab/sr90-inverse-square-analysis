@@ -1,0 +1,15 @@
+{
+  "pages": 2,
+  "abstract_words": 155,
+  "body_font_pt": 10,
+  "template_class_unmodified": true,
+  "all_141_records_retained": true,
+  "citations_and_cross_references_resolved": true,
+  "no_overfull_boxes": true,
+  "pages_visually_checked": true,
+  "method": "All-repeat primary analysis; closest-three sensitivity; far-only normalization; conditional uncertainty scope explicit.",
+  "pdf_sha256": "016c171f550db63d6e49e07d67a79ecc6106b343ff41fef61cf91d80d1b18f24",
+  "latex_sha256": "4bccd5ca7a384016c24ea590a70d3f3af94385b0f87bb3a761616ec54c92e874",
+  "latex_compiler": "pdfTeX1.40.29, TeX Live2026",
+  "native_editor_compile": "Requested but did not return within the working wait; delivered PDF compiled and verified using local pdfLaTeX."
+}

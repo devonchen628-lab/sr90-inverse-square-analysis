@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.16)
+project(far15_vac LANGUAGES CXX)
+find_package(Geant4 REQUIRED COMPONENTS ui_all vis_all)
+include(${Geant4_USE_FILE})
+add_executable(far15_vac geant_vacuum.cc)
+target_compile_features(far15_vac PRIVATE cxx_std_17)
+target_link_libraries(far15_vac PRIVATE ${Geant4_LIBRARIES})

@@ -1,0 +1,83 @@
+\documentclass[journal,a4paper]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\textfloatsep}{7pt}
+\setlength{\floatsep}{6pt}
+\setlength{\intextsep}{7pt}
+\setlength{\abovedisplayskip}{4pt}
+\setlength{\belowdisplayskip}{4pt}
+\begin{document}
+\title{Geometry and Air Transport in a Beta-Radiation Inverse-Square Experiment}
+\author{Qiyue Chen}
+\markboth{Q. Chen}{Geometry and Air Transport in Beta Counting}
+\maketitle
+\begin{abstract}
+We investigate how geometry and beta transport affect the measured inverse-square dependence of a $^{90}$Sr/$^{90}$Y source. At 32 rail separations, the count-rate product $Rd^2$ rises from 1.83 to 13.33 and then falls to $9.83\,\mathrm{m^2\,s^{-1}}$. A finite-geometry model has total deviance $1022.8$ for 31 nominal degrees of freedom; adding effective attenuation reduces it to $216.6/30$, but leaves structured residuals. For 30 points selected by a 1\% geometry criterion, the experimental coefficient is $\mu_{\rm exp}=0.472\pm0.019\,\mathrm{m^{-1}}$ (formal, model-dependent uncertainty). A matched-medium Geant4 comparison yields an effective slope of $0.542\,\mathrm{m^{-1}}$, but predicts a stronger decline at the largest distance and has a non-constant vacuum-to-geometry response. Air transport is a plausible contributor; quantitative agreement and a unique cause are not established.
+\end{abstract}
+
+\section{Introduction}
+For an isotropic point source and sufficiently small detector, geometric dilution predicts $R\propto r^{-2}$, so $Rr^2$ is constant \cite{script}. In a real beta-counting experiment, the rail distance need not equal the active-plane separation, and particle transport and detector response may alter the recorded rate. We ask quantitatively: how much do finite geometry and an effective attenuation term improve the description of $Rd^2$, and is the inferred far-field attenuation consistent with independently simulated air transport?
+
+\section{Measurement and models}
+A sealed $^{90}$Sr/$^{90}$Y source and a visually aligned S3590-09 silicon detector were mounted on a rail (Fig.~\ref{fig:setup}). The detector's nominal active area is $10\times10\,\mathrm{mm^2}$ \cite{sensor}. The stored rail separation $d$ is the recorded position less the fixed 50 mm base width; the model active-plane separation is $r=d+\delta$, constrained by $\delta=(18.0\pm1.5)$ mm. At each of 32 positions, $d=1$--85 cm, the final three counts and acquisition times were summed, giving 15--195 s per position. Longer exposures at larger distances helped retain counting precision. Each rail reading has $\sigma_d=0.5$ mm, treated as a standard uncertainty.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{setup_schematic.pdf}
+\caption{Side view of the rail-mounted apparatus, not to scale. $d$ is the stored rail separation, $g$ the housing face gap, and $r$ the emitting-to-sensitive-plane separation. The common offset $\delta$ includes the rail-reference and recess contributions; the sketch does not independently calibrate it.}
+\label{fig:setup}
+\end{figure}
+
+For total counts $n$ and time $t$, $R=n/t$. Figure~\ref{fig:models} displays the raw $u=Rd^2$ with propagated uncertainty $\sigma_u=u[1/n+(2\sigma_d/d)^2]^{1/2}$. The distance contribution is shared between the plotted horizontal and vertical coordinates. To avoid fitting transformed errors, the likelihood instead uses the original counts and a Gaussian-constrained latent rail position for each measurement.
+
+The finite-geometry model averages the exact rectangular-detector solid angle over a uniform circular source of assumed radius 4.875 mm, giving $\epsilon_{\rm geo}(d+\delta)$. Numerical integration uses 24 radial and 96 angular points; doubled-resolution and independent detector-area checks agree within $2\times10^{-6}$ relatively. This tests finite acceptance, but the aperture alone does not establish the actual emitting area.
+
+Models M2 and M3 predict the source rate $S$ and observed rate $R_{\rm pred}$ as
+\begin{equation}
+ S=C\epsilon_{\rm geo}(d+\delta)\begin{cases}1,&\text{M2},\\e^{-\mu d},&\text{M3},\end{cases}
+ \quad R_{\rm pred}=\frac{S+B}{1+\tau(S+B)}.
+ \label{eq:model}
+\end{equation}
+Here $B$ is the pre-dead-time background. An independent measurement of eight counts in 60 s constrains the common observed background $\beta=B/(1+\tau B)$ through a Poisson likelihood. We use $\tau=1.97884\,\mu$s as a fixed effective non-paralysable response, conditional on identifying a short-interval cutoff with this dead time. Its quoted $0.02126\,\mu$s fit uncertainty does not establish the response model. A genuine dead-time process is not exactly Poisson \cite{pomme}. M3's $\mu$ is phenomenological rather than a calibrated absorption coefficient. M0 is a fitted constant $Rd^2$ reference, with no background or dead-time response.
+
+Expected scan counts $t_iR_{{\rm pred},i}$ and the background control are fitted jointly. The reported total deviance adds their Poisson deviances to the squared distance and shared-offset constraint residuals. Its nominal degrees of freedom count independent constraints and nuisance parameters; goodness-of-fit probabilities and parameter intervals are conditional on the assumed errors.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{model_comparison_two_panel.pdf}
+\caption{(a) Measured $Rd^2$ and model predictions. Error bars propagate counting and independent rail-reading uncertainties. In the figure, the blue M1 and red M2 labels correspond to the report models M2 and M3, respectively. The grey M0 curve is a legacy baseline with background and dead time, distinct from the constant M0 fitted here; it is shown for context only. (b) Rate residuals divided by local counting and distance-reading uncertainties. Correlated offset and fitted-parameter errors are not included in the pointwise denominator.}
+\label{fig:models}
+\end{figure}
+
+\section{Results and Geant4 comparison}
+The raw $Rd^2$ rises from 1.83 at 1 cm to 13.33 at 37.5 cm, then falls to $9.83\,\mathrm{m^2\,s^{-1}}$ at 85 cm. M2 gives total deviance $1022.8/31$; M3 gives $216.6/30$ and $\mu=(0.441\pm0.016)\,\mathrm{m^{-1}}$. The uncertainty profiles the common offset and background but fixes the assumed dead-time response. The improvement does not establish an adequate model: the reduced deviance is 7.22 and residuals retain distance structure (Fig.~\ref{fig:models}). The M2 offset profiles to 11.20 mm, in tension with the independent 18 mm constraint. M0 is only a reference: its fit requires implausibly large distance shifts.
+
+At the fitted M3 parameters, the assumed dead time reduces the predicted source-only rate at 1 cm by 3.54\%; at 85 cm, background increases it by 0.70\%. These are direct rate changes, not separately measured contributions to the deviance reduction. Repeatability also limits a counting-only error model: the three 55 cm readings are 1982, 2170 and 2232 counts in 55 s each. Their scatter gives $Q=15.93$ for two degrees of freedom under a stationary Poisson model; this example was selected after inspection and does not constitute a global test of every point.
+
+To test air transport independently, we compare Geant4~11.4.3 air and vacuum detection probabilities \cite{geant}, using identical assumed solids and a 10 keV silicon-deposition threshold. The source is a 22 mm assumed emitting disc behind a 9.75 mm aperture; the analytic model instead assumes a 9.75 mm active disc. The simulations use an 18 mm offset, 6/3 mm source/detector recesses, and assumed encapsulation and material response. Their ratio $T=P_{\rm air}/P_{\rm vac}$ includes scattering, energy loss and threshold effects, not absorption alone.
+
+The analytic finite-geometry response differs from its inverse-square approximation by less than 1\% beyond $r=6.50$ cm. At nominal offset, the first qualifying rail position is $d=5$ cm, leaving 30 points. Refit over these points gives $\mu_{\rm exp}=0.472\pm0.019\,\mathrm{m^{-1}}$ with total deviance $205.0/28$. Fixing $\delta$ to 16.5, 18.0 and 19.5 mm gives $\mu_{\rm exp}=0.376$, 0.411 and $0.446\,\mathrm{m^{-1}}$, respectively. Offset sensitivity and remaining residuals therefore exceed what the formal error alone conveys.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{figure2_geant4_simplified.pdf}
+\caption{Geant4 air/vacuum response and experimental M3 attenuation term, each normalised at $d=30$ cm. All simulation positions are shown; grey marks points excluded by the 1\% analytic geometry criterion. Bars are pointwise 16--84\% batch-bootstrap intervals. The dashed line summarises the simulated far-field ratio by an exponential; the red line is a fitted experimental model, not measured transmission.}
+\label{fig:transport}
+\end{figure}
+
+Eight independent air and twelve vacuum source libraries were resampled by whole batch to retain correlations across distances. An anchored exponential summarises the 5--85 cm Geant4 ratio with $\mu_{\rm MC}=0.542\,\mathrm{m^{-1}}$; the bootstrap median is 0.521, with 16--84\% interval 0.315--$0.737\,\mathrm{m^{-1}}$. Both responses decline, but at 85 cm relative to 30 cm the simulation gives $0.537$ (0.446--0.698) while experimental M3 gives 0.771 (Fig.~\ref{fig:transport}). The simulation shows curvature, so one exponential is only a range-dependent summary. Moreover, its vacuum-to-analytic-geometry ratio, normalised at 30 cm, is approximately 1.23 at 5 cm and 0.87 at 55 cm; a common geometric baseline is not established. Monte Carlo intervals exclude uncertainty in source size, materials, spectrum and threshold.
+
+\section{Conclusion}\label{sec:conclusion}
+Finite geometry and an effective attenuation term improve the description of the non-constant $Rd^2$, but the remaining residuals rule out an adequate description under the adopted statistical model. Simulated air transport and the experimental attenuation show a qualitatively similar decline, yet the farthest-point responses and vacuum baseline limit a quantitative comparison. Measuring the active-plane offset, source geometry and rate-dependent detector response independently would better distinguish the remaining contributions.
+
+\clearpage
+\phantomsection\label{sec:references}
+\begin{thebibliography}{4}
+\bibitem{script} Imperial College London, \emph{Radioactivity}, Year 2 laboratory script, 2026, Tasks 14--17.
+\bibitem{sensor} Hamamatsu Photonics, \emph{Si PIN Photodiodes: S3590 Series}, KPIN1052E11, 2020.
+\bibitem{pomme} S. Pomm\'e, R. Fitzgerald and J. Keightley, ``Uncertainty of nuclear counting,'' \emph{Metrologia} 52, S3--S17 (2015), doi:~\href{https://doi.org/10.1088/0026-1394/52/3/S3}{10.1088/0026-1394/52/3/S3}.
+\bibitem{geant} S. Agostinelli \emph{et al.}, ``Geant4---a simulation toolkit,'' \emph{Nucl. Instrum. Methods A} 506, 250--303 (2003), doi:~\href{https://doi.org/10.1016/S0168-9002(03)01368-8}{10.1016/S0168-9002(03)01368-8}.
+\end{thebibliography}
+\end{document}

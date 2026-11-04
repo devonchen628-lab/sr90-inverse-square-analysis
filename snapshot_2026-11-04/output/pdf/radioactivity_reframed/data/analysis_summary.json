@@ -1,0 +1,268 @@
+{
+  "primary_data": "All141 observations, pooled by distance; no closest-three selection in main analysis.",
+  "source": "/Users/chenqiyue/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Radlab/task 16 data.xlsx",
+  "source_sha256": "f81768f38d2e053dd94080f7cc32925646583ee4050a060d15cc5578e6980489",
+  "distances": 32,
+  "observations": 141,
+  "individual_exposure_range_s": [
+    5.0,
+    65.0
+  ],
+  "count_uncertainty": "Poisson rate SE inflated by max(1,sqrt(PearsonQ/(m-1))) across repeats at each distance; common background and recovery-fit errors propagated.",
+  "distance_uncertainty": "Independent rail reading uniform +/-0.5mm, standard uncertainty0.5/sqrt3mm. No invented probability distribution for uncertain common offsets; explicit geometry scenarios.",
+  "nominal_statistical_limit": "Scenario parameters and detector response are conditional. Pointwise nominal intervals are not a global goodness-of-fit or causal test.",
+  "max_absolute_all_vs_selected_rate_change_pct": 4.4287152215597425,
+  "max_near_all_vs_selected_rate_change_pct": 0.6323646108135961,
+  "max_data_scatter_scale": 2.822106609305487,
+  "nearest": {
+    "d_m": 0.01,
+    "number_of_records": 3,
+    "total_counts": 274211,
+    "total_time_s": 15.0,
+    "raw_rate_cps": 18280.733333333334,
+    "corrected_rate_cps": 18973.878539900626,
+    "corrected_rate_se": 38.346946463847715,
+    "scatter_scale": 1.0,
+    "u_recorded": 1.8280733333333334,
+    "u_offset21": 18.233897276844502
+  },
+  "furthest": {
+    "d_m": 0.85,
+    "number_of_records": 6,
+    "total_counts": 4527,
+    "total_time_s": 330.0,
+    "raw_rate_cps": 13.718181818181819,
+    "corrected_rate_cps": 13.585224598385821,
+    "corrected_rate_se": 0.20927740468218062,
+    "scatter_scale": 1.0,
+    "u_recorded": 9.911386363636364,
+    "u_offset21": 10.306308374544018
+  },
+  "deadtime": {
+    "source": "/Users/chenqiyue/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Radlab/deadtime.csv",
+    "confirmed_display_range_us": 31.25,
+    "bins": 500,
+    "bin_width_us": 0.0625,
+    "total_counts": 299106,
+    "elapsed_s": 60.129577,
+    "mean_recorded_rate_cps": 4974.3572950795915,
+    "overflow_counts": 258695,
+    "overflow_fraction": 0.8648940509384633,
+    "first_nonzero_bin": 18,
+    "first_nonzero_bin_interval_us": [
+      1.125,
+      1.1875
+    ],
+    "model": "Descriptive soft recovery: Gaussian-distributed delay plus exponential interval; includes overflow bin.",
+    "mu_delay_us": 1.9987336691853628,
+    "mu_statistical_se_us": 0.02080681023026314,
+    "sigma_recovery_us": 0.3438729244623332,
+    "sigma_statistical_se_us": 0.019079906428384995,
+    "exponential_rate_per_us": 0.004969547768626049,
+    "exponential_rate_statistical_se_per_us": 2.5011652977264028e-05,
+    "effective_10_50_90_percent_recovery_us": {
+      "0.1": 1.5586304264997841,
+      "0.5": 1.9993213111928874,
+      "0.9": 2.4400121958859904,
+      "0.95": 2.5649419382051657
+    },
+    "multinomial_deviance": 415.8653743573151,
+    "nominal_dof": 497,
+    "nominal_chi2_p_NOT_CALIBRATED_LOW_EXPECTED_EDGE_BINS": 0.9966061572407201,
+    "sharp_cutoff_us": 1.186803794295267,
+    "sharp_cutoff_deviance": 1880.256211913365,
+    "mu_finite_range_free_amplitude_us": 1.9820291803650294,
+    "free_amplitude_tail_rate_per_us": 0.003001581343104272,
+    "statistical_uncertainty_caveat": "Conditional on recovery model, known time-axis mapping and overflow convention; not a full physical dead-time uncertainty."
+  },
+  "repeatability": {
+    "pairs": 12,
+    "Q": 54.02574778190458,
+    "df": 12,
+    "p": 2.7038762572983984e-07
+  },
+  "models": {
+    "G0": {
+      "A": 12820988.79408379,
+      "offset": 0.016,
+      "dx": 0,
+      "dy": 0,
+      "source_recess": 5,
+      "detector_recess": 2,
+      "near": [
+        {
+          "d_cm": 1.0,
+          "ratio": 0.624383433720448,
+          "se": 0.024005642602931525,
+          "nominal_z": 15.64701151693737,
+          "selected_three_ratio": 0.6170438957362337
+        },
+        {
+          "d_cm": 2.5,
+          "ratio": 0.7296128677789382,
+          "se": 0.02179672596419087,
+          "nominal_z": 12.404942497569223,
+          "selected_three_ratio": 0.7181722055860928
+        },
+        {
+          "d_cm": 5.0,
+          "ratio": 0.8099069694583155,
+          "se": 0.028202460919607066,
+          "nominal_z": 6.740299404493704,
+          "selected_three_ratio": 0.8009114014611168
+        },
+        {
+          "d_cm": 7.5,
+          "ratio": 0.8460919235083093,
+          "se": 0.022946177797366515,
+          "nominal_z": 6.707351344124702,
+          "selected_three_ratio": 0.8308919671737327
+        },
+        {
+          "d_cm": 10.0,
+          "ratio": 0.8662619965065352,
+          "se": 0.028132587988094468,
+          "nominal_z": 4.753846448469719,
+          "selected_three_ratio": 0.8560792106024372
+        }
+      ],
+      "selected_normalization": 12973490.317718647
+    },
+    "G1": {
+      "A": 12964040.481606625,
+      "offset": 0.019,
+      "dx": 0,
+      "dy": 3,
+      "source_recess": 5,
+      "detector_recess": 2,
+      "near": [
+        {
+          "d_cm": 1.0,
+          "ratio": 0.8356680954660857,
+          "se": 0.02796285272444617,
+          "nominal_z": 5.8767932640237825,
+          "selected_three_ratio": 0.8258449364941683
+        },
+        {
+          "d_cm": 2.5,
+          "ratio": 0.8677236481780726,
+          "se": 0.023025980075144597,
+          "nominal_z": 5.744656748170871,
+          "selected_three_ratio": 0.8541173460225652
+        },
+        {
+          "d_cm": 5.0,
+          "ratio": 0.8619789992512276,
+          "se": 0.03471325986881636,
+          "nominal_z": 3.9760310979251923,
+          "selected_three_ratio": 0.8524050716369171
+        },
+        {
+          "d_cm": 7.5,
+          "ratio": 0.8856417587382455,
+          "se": 0.025244684392763617,
+          "nominal_z": 4.5299929079143215,
+          "selected_three_ratio": 0.8697312935903482
+        },
+        {
+          "d_cm": 10.0,
+          "ratio": 0.9090491107224309,
+          "se": 0.04637476360447142,
+          "nominal_z": 1.9612151568746692,
+          "selected_three_ratio": 0.8983633684087602
+        }
+      ],
+      "selected_normalization": 13118243.55889351
+    },
+    "G2": {
+      "A": 13949075.95774759,
+      "offset": 0.021,
+      "dx": 1,
+      "dy": 3,
+      "source_recess": 6,
+      "detector_recess": 3,
+      "near": [
+        {
+          "d_cm": 1.0,
+          "ratio": 0.8167069618640317,
+          "se": 0.02826861503445827,
+          "nominal_z": 6.483976590736465,
+          "selected_three_ratio": 0.8071066883063913
+        },
+        {
+          "d_cm": 2.5,
+          "ratio": 0.8551032623203582,
+          "se": 0.03887096382149851,
+          "nominal_z": 3.7276342913705487,
+          "selected_three_ratio": 0.8416948535651916
+        },
+        {
+          "d_cm": 5.0,
+          "ratio": 0.8803184298993304,
+          "se": 0.032525844060243746,
+          "nominal_z": 3.679583837363227,
+          "selected_three_ratio": 0.8705408077847242
+        },
+        {
+          "d_cm": 7.5,
+          "ratio": 0.8754050486462129,
+          "se": 0.03650334200493893,
+          "nominal_z": 3.4132477880225123,
+          "selected_three_ratio": 0.8596784849658515
+        },
+        {
+          "d_cm": 10.0,
+          "ratio": 0.8654516782597411,
+          "se": 0.0327911332646014,
+          "nominal_z": 4.103192184745446,
+          "selected_three_ratio": 0.8552784175307655
+        }
+      ],
+      "selected_normalization": 14114995.714095643
+    }
+  },
+  "nearest_correction_pct": 3.7916706837104908,
+  "raw_u_max": {
+    "d_m": 0.375,
+    "number_of_records": 6,
+    "total_counts": 14324,
+    "total_time_s": 150.0,
+    "raw_rate_cps": 95.49333333333334,
+    "corrected_rate_cps": 95.37822985169024,
+    "corrected_rate_se": 0.7995816108375072,
+    "scatter_scale": 1.0,
+    "u_recorded": 13.42875,
+    "u_offset21": 14.956832492422658
+  },
+  "latest_near_ratio_range": [
+    0.8167069618640317,
+    0.8803184298993304
+  ],
+  "threshold_sensitivity_G0_far_calibrated": [
+    {
+      "threshold_keV": 0.1,
+      "nearest_ratio": 0.6233123962935218
+    },
+    {
+      "threshold_keV": 5,
+      "nearest_ratio": 0.6234577829718114
+    },
+    {
+      "threshold_keV": 10,
+      "nearest_ratio": 0.624383433720448
+    },
+    {
+      "threshold_keV": 20,
+      "nearest_ratio": 0.6274150298691434
+    },
+    {
+      "threshold_keV": 40,
+      "nearest_ratio": 0.6297340977948341
+    },
+    {
+      "threshold_keV": 60,
+      "nearest_ratio": 0.6327754420379536
+    }
+  ],
+  "minimum_pooled_counts": 4422.0
+}

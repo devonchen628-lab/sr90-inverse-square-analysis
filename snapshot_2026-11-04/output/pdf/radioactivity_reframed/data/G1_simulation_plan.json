@@ -1,0 +1,44 @@
+{
+  "R": 8,
+  "nsource": 400000,
+  "npop": 16000,
+  "distances": [
+    0.01,
+    0.025,
+    0.05,
+    0.075,
+    0.1,
+    0.3,
+    0.5,
+    0.85
+  ],
+  "seed": 1810110000,
+  "mode": "smc",
+  "phase": "production",
+  "geometry": {
+    "active_plane_offset_mm": 19,
+    "detector_center_y_mm": 3,
+    "source_center_y_mm": 0,
+    "source_recess_mm": 5,
+    "detector_recess_mm": 2,
+    "source_aperture_diameter_mm": 11,
+    "emitter_diameter_mm": 22,
+    "detector_size_mm": [
+      10,
+      10,
+      0.3
+    ],
+    "detector_opening_mm": [
+      10,
+      10
+    ],
+    "interpretation": "Left external offset10mm, right external2mm, recesses2+5mm; total19mm. Transverse3mm moves detector and its frame together. Planes parallel.",
+    "other_assumptions": "Inherited recessed model, source films, materials, spectra and energy threshold; importance proposals unchanged with full support and exact weight corrections."
+  },
+  "binary_sha256": "42b1a1aeb749362230a0e6a82ab6eb7f7ef77e8aeab483758ba3893055a3dab8",
+  "source_sha256": "019afae63f966fb62caeca6d68758488062d662ca348991a841a155df6f4ec23",
+  "spectrum_sha256": "a24bdf08052faecbfa51268ff4de4a34fd937296ffd9b115b32e4d03761915e0",
+  "data_sha256": "f81768f38d2e053dd94080f7cc32925646583ee4050a060d15cc5578e6980489",
+  "comparison": "Main comparison calibrates one common amplitude using only three far anchors30,50,85cm. Identical far-anchor log weights for both geometries. No near data used for calibration. Also report previous fixed amplitude.",
+  "error": "Complete independently seeded batch covariance; replay counts are not independent primary emissions."
+}

@@ -1,0 +1,4 @@
+effect,max_absolute_relative_change_percent,signed_change_percent,distance_cm,baseline
+background_only,0.7026263232864594,0.7026263232864594,85.0,same fitted M2 source-only S; no refitting
+dead_time_only,3.537591288682862,-3.537591288682862,1.0,same fitted M2 source-only S; no refitting
+background_plus_dead_time,3.5370619065153375,-3.5370619065153375,1.0,same fitted M2 source-only S; no refitting

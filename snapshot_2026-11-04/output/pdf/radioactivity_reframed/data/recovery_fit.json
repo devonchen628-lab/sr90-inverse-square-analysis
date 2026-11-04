@@ -1,0 +1,37 @@
+{
+  "source": "/Users/chenqiyue/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Radlab/deadtime.csv",
+  "confirmed_display_range_us": 31.25,
+  "bins": 500,
+  "bin_width_us": 0.0625,
+  "total_counts": 299106,
+  "elapsed_s": 60.129577,
+  "mean_recorded_rate_cps": 4974.3572950795915,
+  "overflow_counts": 258695,
+  "overflow_fraction": 0.8648940509384633,
+  "first_nonzero_bin": 18,
+  "first_nonzero_bin_interval_us": [
+    1.125,
+    1.1875
+  ],
+  "model": "Descriptive soft recovery: Gaussian-distributed delay plus exponential interval; includes overflow bin.",
+  "mu_delay_us": 1.9987336691853628,
+  "mu_statistical_se_us": 0.02080681023026314,
+  "sigma_recovery_us": 0.3438729244623332,
+  "sigma_statistical_se_us": 0.019079906428384995,
+  "exponential_rate_per_us": 0.004969547768626049,
+  "exponential_rate_statistical_se_per_us": 2.5011652977264028e-05,
+  "effective_10_50_90_percent_recovery_us": {
+    "0.1": 1.5586304264997841,
+    "0.5": 1.9993213111928874,
+    "0.9": 2.4400121958859904,
+    "0.95": 2.5649419382051657
+  },
+  "multinomial_deviance": 415.8653743573151,
+  "nominal_dof": 497,
+  "nominal_chi2_p_NOT_CALIBRATED_LOW_EXPECTED_EDGE_BINS": 0.9966061572407201,
+  "sharp_cutoff_us": 1.186803794295267,
+  "sharp_cutoff_deviance": 1880.256211913365,
+  "mu_finite_range_free_amplitude_us": 1.9820291803650294,
+  "free_amplitude_tail_rate_per_us": 0.003001581343104272,
+  "statistical_uncertainty_caveat": "Conditional on recovery model, known time-axis mapping and overflow convention; not a full physical dead-time uncertainty."
+}

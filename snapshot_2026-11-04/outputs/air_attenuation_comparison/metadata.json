@@ -1,0 +1,16 @@
+{
+  "input": "/Users/chenqiyue/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Radlab/Task16_2.csv",
+  "sha256": "cd6af2cff2534ecb453bb393a68a66670138b825cc0182ac6b21c51379749fae",
+  "rows_used": 32,
+  "distance_range_m": [
+    0.01,
+    0.85
+  ],
+  "omitted_background_rows": [],
+  "geometry_checks": {
+    "quadrature_max_relative_difference": 0.0,
+    "detector_integral_max_relative_difference": 8.881784197001252e-16,
+    "derivative_max_relative_difference": 2.1282553497314893e-10
+  },
+  "notes": "Poisson counts; independent Gaussian distance errors; shared Gaussian offset in constrained fits. No background, dead time or Geant4 correction. Figure uses fixed 18 mm offset. Residual denominator includes counting and independent distance errors, not shared offset or fitted-parameter covariance. Deviance p values and information criteria are approximate; systematic error not included."
+}

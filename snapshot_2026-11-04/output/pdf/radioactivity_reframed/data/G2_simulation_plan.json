@@ -1,0 +1,47 @@
+{
+  "R": 8,
+  "nsource": 400000,
+  "npop": 16000,
+  "distances": [
+    0.01,
+    0.025,
+    0.05,
+    0.075,
+    0.1,
+    0.3,
+    0.5,
+    0.85
+  ],
+  "seed": 1840110000,
+  "mode": "smc",
+  "phase": "production",
+  "geometry": {
+    "active_plane_offset_mm": 21,
+    "detector_center_x_mm": 1,
+    "detector_center_y_mm": 3,
+    "source_center_x_mm": 0,
+    "source_center_y_mm": 0,
+    "source_recess_mm": 6,
+    "detector_recess_mm": 3,
+    "source_bored_plate_thickness_mm": 4.7,
+    "source_aperture_diameter_mm": 11,
+    "emitter_diameter_mm": 22,
+    "detector_size_mm": [
+      10,
+      10,
+      0.3
+    ],
+    "detector_opening_mm": [
+      10,
+      10
+    ],
+    "interpretation": "Left external offset10mm, right external2mm, detector/source recesses3+6mm; total21mm. Detector and its frame translated together by x1mm and y3mm. Planes parallel.",
+    "other_assumptions": "Retain inherited films at z0.25-1.3mm and extend source bored Al plate from z1.3 to6mm (4.7mm thick); detector frame3mm deep. Aperture sizes/materials and emission disk unchanged. Importance proposals retain full support and exact weight correction."
+  },
+  "binary_sha256": "f4c16a4b5c06becff8e09544d38d63e45bbf868cac7f7ce6a6747c2ed8f40037",
+  "source_sha256": "f41485b0144fbe30a32394f10ff0a2788ee4998d39fcf9e3c458cfafa93ae0a8",
+  "spectrum_sha256": "a24bdf08052faecbfa51268ff4de4a34fd937296ffd9b115b32e4d03761915e0",
+  "data_sha256": "f81768f38d2e053dd94080f7cc32925646583ee4050a060d15cc5578e6980489",
+  "comparison": "Main comparison calibrates one common amplitude using only three far anchors30,50,85cm. Identical far-anchor log weights for both geometries. No near data used for calibration. Also report previous fixed amplitude.",
+  "error": "Complete independently seeded batch covariance; replay counts are not independent primary emissions."
+}

@@ -1,0 +1,16 @@
+{
+  "input": "/Users/chenqiyue/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Radlab/Task16_2.csv",
+  "sha256": "cd6af2cff2534ecb453bb393a68a66670138b825cc0182ac6b21c51379749fae",
+  "N": 32,
+  "background_observed_counts": 8,
+  "background_time_s": 60,
+  "tau_us": 1.97884,
+  "tau_formal_sigma_us": 0.02126,
+  "geometry_checks": {
+    "quadrature_max_relative_difference": 0.0,
+    "detector_integral_max_relative_difference": 8.881784197001252e-16,
+    "derivative_max_relative_difference": 2.1282553497314893e-10
+  },
+  "omitted": [],
+  "notes": "Counts and background control modelled as Poisson; shared background parameter in applicable fits; fixed tau sensitivity; shared Gaussian offset. M3 response is an unvalidated non-paralyzable approximation. Profile intervals include background and offset, not uncertainty in tau or unmodelled systematic effects. Delta AIC/BIC are heuristic due to per-point latent nuisance parameters and misspecification."
+}

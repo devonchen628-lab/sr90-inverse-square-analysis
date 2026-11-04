@@ -1,0 +1,42 @@
+{
+  "reference_distance_m": 0.3,
+  "distances_m": [
+    0.01,
+    0.85
+  ],
+  "points": 32,
+  "mu_exp_per_m": 0.4407777081712937,
+  "mu_exp_profile_interval_per_m": [
+    0.4250313644703961,
+    0.4565524414249244
+  ],
+  "mu_MC_per_m": 0.5893112776700798,
+  "mu_MC_bootstrap_16_84_per_m": [
+    0.32863067486940867,
+    0.8052339010115849
+  ],
+  "mu_MC_bootstrap_std_per_m": 0.2344067976581484,
+  "MC_airvac_85_over_30": 0.5366288428869835,
+  "MC_airvac_85_over_30_16_84": [
+    0.44578716170381877,
+    0.6993378191296927
+  ],
+  "exp_model_85_over_30": 0.7847204498266382,
+  "vacuum_over_geo_normalized_85": 1.1445866779941107,
+  "vacuum_over_geo_normalized_85_16_84": [
+    0.8917301805338916,
+    1.3641873156430269
+  ],
+  "air_batches": 8,
+  "vacuum_batches": 12,
+  "bootstrap_draws": 20000,
+  "slope_fit": "weighted straight-line fit to log air/vac ratio over all 32 distances; fixed diagonal bootstrap variance weights; entire source-library batches resampled to estimate uncertainty. Correlated distance estimates, not a full GLS fit; CI conditional on model and limited batches.",
+  "caveats": [
+    "Geant4 emitter diameter 22 mm but analytical model emitter diameter 9.75 mm; aperture diameter 9.75 mm, not necessarily active diameter.",
+    "Geant4 and analytical geometry use 18 mm; experimental M3 profiles a common offset around 18 \u00b1 1.5 mm and finds 19.04 mm.",
+    "Geant4 includes assumed 10 keV threshold, source housing/foil/acrylic and detector response, not present in analytical efficiency.",
+    "Independent air and vacuum batches; source histories reused across distances; no inverse of rank-limited 32x32 MC covariance.",
+    "MC intervals exclude geometry, materials, spectrum and threshold systematics; experimental profile interval excludes response model uncertainty.",
+    "Unnormalised Geant4 air/vac is a model-dependent response ratio; not measured transmission, nor proof of physical cause."
+  ]
+}
